@@ -40,7 +40,8 @@ const steps = [
 function Onboarding() {
   const [step, setStep] = useState(0);
   const [picked, setPicked] = useState<Record<number, string>>({});
-  const done = step >= steps.length;
+  const current = steps[step];
+  const done = step >= steps.length || !current;
 
   return (
     <div className="pb-10">
@@ -63,9 +64,9 @@ function Onboarding() {
               <p className="text-xs font-semibold text-plum">
                 Step {step + 1} of {steps.length}
               </p>
-              <h2 className="font-display text-2xl tracking-tight">{steps[step].q}</h2>
+              <h2 className="font-display text-2xl tracking-tight">{current!.q}</h2>
               <div className="grid gap-3 sm:grid-cols-2">
-                {steps[step].options.map((o) => (
+                {current!.options.map((o) => (
                   <motion.button
                     key={o}
                     whileHover={{ y: -4 }}

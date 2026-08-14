@@ -20,6 +20,9 @@ import { Route as AppCommunityRouteImport } from './routes/app.community'
 import { Route as AppGoalsRouteImport } from './routes/app.goals'
 import { Route as AppMoodRouteImport } from './routes/app.mood'
 import { Route as AppNudgesRouteImport } from './routes/app.nudges'
+import { Route as AppOnboardingRouteImport } from './routes/app.onboarding'
+import { Route as AppProfileRouteImport } from './routes/app.profile'
+import { Route as AppSettingsRouteImport } from './routes/app.settings'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -76,6 +79,21 @@ const AppNudgesRoute = AppNudgesRouteImport.update({
   path: '/nudges',
   getParentRoute: () => AppRoute,
 } as any)
+const AppOnboardingRoute = AppOnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProfileRoute = AppProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -88,6 +106,9 @@ export interface FileRoutesByFullPath {
   '/app/goals': typeof AppGoalsRoute
   '/app/mood': typeof AppMoodRoute
   '/app/nudges': typeof AppNudgesRoute
+  '/app/onboarding': typeof AppOnboardingRoute
+  '/app/profile': typeof AppProfileRoute
+  '/app/settings': typeof AppSettingsRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
@@ -100,6 +121,9 @@ export interface FileRoutesByTo {
   '/app/goals': typeof AppGoalsRoute
   '/app/mood': typeof AppMoodRoute
   '/app/nudges': typeof AppNudgesRoute
+  '/app/onboarding': typeof AppOnboardingRoute
+  '/app/profile': typeof AppProfileRoute
+  '/app/settings': typeof AppSettingsRoute
   '/app': typeof AppIndexRoute
 }
 export interface FileRoutesById {
@@ -114,6 +138,9 @@ export interface FileRoutesById {
   '/app/goals': typeof AppGoalsRoute
   '/app/mood': typeof AppMoodRoute
   '/app/nudges': typeof AppNudgesRoute
+  '/app/onboarding': typeof AppOnboardingRoute
+  '/app/profile': typeof AppProfileRoute
+  '/app/settings': typeof AppSettingsRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
@@ -129,6 +156,9 @@ export interface FileRouteTypes {
     | '/app/goals'
     | '/app/mood'
     | '/app/nudges'
+    | '/app/onboarding'
+    | '/app/profile'
+    | '/app/settings'
     | '/app/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -141,6 +171,9 @@ export interface FileRouteTypes {
     | '/app/goals'
     | '/app/mood'
     | '/app/nudges'
+    | '/app/onboarding'
+    | '/app/profile'
+    | '/app/settings'
     | '/app'
   id:
     | '__root__'
@@ -154,6 +187,9 @@ export interface FileRouteTypes {
     | '/app/goals'
     | '/app/mood'
     | '/app/nudges'
+    | '/app/onboarding'
+    | '/app/profile'
+    | '/app/settings'
     | '/app/'
   fileRoutesById: FileRoutesById
 }
@@ -244,6 +280,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppNudgesRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/onboarding': {
+      id: '/app/onboarding'
+      path: '/onboarding'
+      fullPath: '/app/onboarding'
+      preLoaderRoute: typeof AppOnboardingRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/profile': {
+      id: '/app/profile'
+      path: '/profile'
+      fullPath: '/app/profile'
+      preLoaderRoute: typeof AppProfileRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/settings': {
+      id: '/app/settings'
+      path: '/settings'
+      fullPath: '/app/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
@@ -253,6 +310,9 @@ interface AppRouteChildren {
   AppGoalsRoute: typeof AppGoalsRoute
   AppMoodRoute: typeof AppMoodRoute
   AppNudgesRoute: typeof AppNudgesRoute
+  AppOnboardingRoute: typeof AppOnboardingRoute
+  AppProfileRoute: typeof AppProfileRoute
+  AppSettingsRoute: typeof AppSettingsRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
@@ -262,6 +322,9 @@ const AppRouteChildren: AppRouteChildren = {
   AppGoalsRoute: AppGoalsRoute,
   AppMoodRoute: AppMoodRoute,
   AppNudgesRoute: AppNudgesRoute,
+  AppOnboardingRoute: AppOnboardingRoute,
+  AppProfileRoute: AppProfileRoute,
+  AppSettingsRoute: AppSettingsRoute,
   AppIndexRoute: AppIndexRoute,
 }
 
