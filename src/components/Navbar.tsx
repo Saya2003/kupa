@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "@tanstack/react-router";
 
 const links = [
   { label: "How it works", href: "#how" },
@@ -69,11 +70,11 @@ export function Navbar() {
         </ul>
 
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="sm" className="hidden rounded-full sm:inline-flex">
-            Sign in
+          <Button variant="ghost" size="sm" className="hidden rounded-full sm:inline-flex" asChild>
+            <Link to="/signin">Sign in</Link>
           </Button>
-          <Button variant="hero" size="sm" className="hidden sm:inline-flex">
-            Start free
+          <Button variant="hero" size="sm" className="hidden sm:inline-flex" asChild>
+            <Link to="/signup">Start free</Link>
           </Button>
           <button
             aria-label="Toggle menu"
@@ -112,8 +113,8 @@ export function Navbar() {
                 </motion.li>
               ))}
               <li className="pt-1">
-                <Button variant="hero" className="w-full">
-                  Start free
+                <Button variant="hero" className="w-full" asChild>
+                  <Link to="/signup">Start free</Link>
                 </Button>
               </li>
             </ul>
