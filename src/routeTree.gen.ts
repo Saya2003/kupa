@@ -16,6 +16,10 @@ import { Route as SigninRouteImport } from './routes/signin'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppCheckinRouteImport } from './routes/app.checkin'
+import { Route as AppCommunityRouteImport } from './routes/app.community'
+import { Route as AppGoalsRouteImport } from './routes/app.goals'
+import { Route as AppMoodRouteImport } from './routes/app.mood'
+import { Route as AppNudgesRouteImport } from './routes/app.nudges'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -52,6 +56,26 @@ const AppCheckinRoute = AppCheckinRouteImport.update({
   path: '/checkin',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCommunityRoute = AppCommunityRouteImport.update({
+  id: '/community',
+  path: '/community',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppGoalsRoute = AppGoalsRouteImport.update({
+  id: '/goals',
+  path: '/goals',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMoodRoute = AppMoodRouteImport.update({
+  id: '/mood',
+  path: '/mood',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppNudgesRoute = AppNudgesRouteImport.update({
+  id: '/nudges',
+  path: '/nudges',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -60,6 +84,10 @@ export interface FileRoutesByFullPath {
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/app/checkin': typeof AppCheckinRoute
+  '/app/community': typeof AppCommunityRoute
+  '/app/goals': typeof AppGoalsRoute
+  '/app/mood': typeof AppMoodRoute
+  '/app/nudges': typeof AppNudgesRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
@@ -68,6 +96,10 @@ export interface FileRoutesByTo {
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/app/checkin': typeof AppCheckinRoute
+  '/app/community': typeof AppCommunityRoute
+  '/app/goals': typeof AppGoalsRoute
+  '/app/mood': typeof AppMoodRoute
+  '/app/nudges': typeof AppNudgesRoute
   '/app': typeof AppIndexRoute
 }
 export interface FileRoutesById {
@@ -78,6 +110,10 @@ export interface FileRoutesById {
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/app/checkin': typeof AppCheckinRoute
+  '/app/community': typeof AppCommunityRoute
+  '/app/goals': typeof AppGoalsRoute
+  '/app/mood': typeof AppMoodRoute
+  '/app/nudges': typeof AppNudgesRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
@@ -89,9 +125,23 @@ export interface FileRouteTypes {
     | '/signin'
     | '/signup'
     | '/app/checkin'
+    | '/app/community'
+    | '/app/goals'
+    | '/app/mood'
+    | '/app/nudges'
     | '/app/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/forgot-password' | '/signin' | '/signup' | '/app/checkin' | '/app'
+  to:
+    | '/'
+    | '/forgot-password'
+    | '/signin'
+    | '/signup'
+    | '/app/checkin'
+    | '/app/community'
+    | '/app/goals'
+    | '/app/mood'
+    | '/app/nudges'
+    | '/app'
   id:
     | '__root__'
     | '/'
@@ -100,6 +150,10 @@ export interface FileRouteTypes {
     | '/signin'
     | '/signup'
     | '/app/checkin'
+    | '/app/community'
+    | '/app/goals'
+    | '/app/mood'
+    | '/app/nudges'
     | '/app/'
   fileRoutesById: FileRoutesById
 }
@@ -162,16 +216,52 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCheckinRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/community': {
+      id: '/app/community'
+      path: '/community'
+      fullPath: '/app/community'
+      preLoaderRoute: typeof AppCommunityRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/goals': {
+      id: '/app/goals'
+      path: '/goals'
+      fullPath: '/app/goals'
+      preLoaderRoute: typeof AppGoalsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/mood': {
+      id: '/app/mood'
+      path: '/mood'
+      fullPath: '/app/mood'
+      preLoaderRoute: typeof AppMoodRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/nudges': {
+      id: '/app/nudges'
+      path: '/nudges'
+      fullPath: '/app/nudges'
+      preLoaderRoute: typeof AppNudgesRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
   AppCheckinRoute: typeof AppCheckinRoute
+  AppCommunityRoute: typeof AppCommunityRoute
+  AppGoalsRoute: typeof AppGoalsRoute
+  AppMoodRoute: typeof AppMoodRoute
+  AppNudgesRoute: typeof AppNudgesRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppCheckinRoute: AppCheckinRoute,
+  AppCommunityRoute: AppCommunityRoute,
+  AppGoalsRoute: AppGoalsRoute,
+  AppMoodRoute: AppMoodRoute,
+  AppNudgesRoute: AppNudgesRoute,
   AppIndexRoute: AppIndexRoute,
 }
 
