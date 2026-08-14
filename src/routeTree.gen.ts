@@ -14,6 +14,8 @@ import { Route as AppRouteImport } from './routes/app'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as SigninRouteImport } from './routes/signin'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppCheckinRouteImport } from './routes/app.checkin'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,40 +42,70 @@ const SignupRoute = SignupRouteImport.update({
   path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCheckinRoute = AppCheckinRouteImport.update({
+  id: '/checkin',
+  path: '/checkin',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/app': typeof AppRoute
+  '/app': typeof AppRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/app/checkin': typeof AppCheckinRoute
+  '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/app': typeof AppRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/app/checkin': typeof AppCheckinRoute
+  '/app': typeof AppIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/app': typeof AppRoute
+  '/app': typeof AppRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/app/checkin': typeof AppCheckinRoute
+  '/app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/app' | '/forgot-password' | '/signin' | '/signup'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/forgot-password'
+    | '/signin'
+    | '/signup'
+    | '/app/checkin'
+    | '/app/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app' | '/forgot-password' | '/signin' | '/signup'
-  id: '__root__' | '/' | '/app' | '/forgot-password' | '/signin' | '/signup'
+  to: '/' | '/forgot-password' | '/signin' | '/signup' | '/app/checkin' | '/app'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/forgot-password'
+    | '/signin'
+    | '/signup'
+    | '/app/checkin'
+    | '/app/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AppRoute: typeof AppRoute
+  AppRoute: typeof AppRouteWithChildren
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   SigninRoute: typeof SigninRoute
   SignupRoute: typeof SignupRoute
@@ -116,12 +148,38 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/checkin': {
+      id: '/app/checkin'
+      path: '/checkin'
+      fullPath: '/app/checkin'
+      preLoaderRoute: typeof AppCheckinRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppCheckinRoute: typeof AppCheckinRoute
+  AppIndexRoute: typeof AppIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppCheckinRoute: AppCheckinRoute,
+  AppIndexRoute: AppIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AppRoute: AppRoute,
+  AppRoute: AppRouteWithChildren,
   ForgotPasswordRoute: ForgotPasswordRoute,
   SigninRoute: SigninRoute,
   SignupRoute: SignupRoute,
