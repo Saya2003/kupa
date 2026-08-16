@@ -73,6 +73,11 @@ function Dashboard() {
           <Button variant="soft" asChild>
             <Link to="/app/nudges">See all nudges</Link>
           </Button>
+          <Button variant="ghost" asChild>
+            <Link to="/app/chat">
+              <Sparkles className="size-4" /> Talk to Kupa
+            </Link>
+          </Button>
         </div>
       </motion.section>
 

@@ -1,10 +1,12 @@
-import { Link, Outlet, useRouterState } from "@tanstack/react-router";
-import { useState } from "react";
+import { Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
+import { useAuthActions, useConvexAuth } from "@convex-dev/auth/react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   Sparkles,
   LayoutDashboard,
   CalendarCheck,
+  MessagesSquare,
   Lightbulb,
   LineChart,
   Heart,
@@ -21,6 +23,7 @@ import { CursorCompanion } from "@/components/CursorCompanion";
 const nav = [
   { to: "/app", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/app/checkin", label: "Daily check-in", icon: CalendarCheck },
+  { to: "/app/chat", label: "Chat with Kupa", icon: MessagesSquare },
   { to: "/app/nudges", label: "Nudges", icon: Lightbulb },
   { to: "/app/mood", label: "Mood trends", icon: LineChart },
   { to: "/app/goals", label: "Goals", icon: Target },
@@ -34,6 +37,18 @@ const bottomNav = [
 
 function NavList({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const navigate = useNavigate();
+  const { signOut } = useAuthActions();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.error(error);
+    }
+    onNavigate?.();
+    navigate({ to: "/signin" });
+  };
 
   const render = (items: readonly { to: string; label: string; icon: typeof User; exact?: boolean }[]) =>
     items.map((item, i) => {
@@ -73,13 +88,12 @@ function NavList({ onNavigate }: { onNavigate?: () => void }) {
         <ul className="space-y-1">{render(bottomNav)}</ul>
       </div>
       <div className="mt-auto pt-6">
-        <Link
-          to="/signin"
-          onClick={onNavigate}
+        <button
+          onClick={handleSignOut}
           className="flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium text-foreground/60 transition-colors hover:bg-secondary/70 hover:text-plum"
         >
           <LogOut className="size-4" /> Sign out
-        </Link>
+        </button>
       </div>
     </div>
   );

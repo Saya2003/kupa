@@ -1,7 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useAuthActions } from "@convex-dev/auth/react";
+import { useMutation } from "convex/react";
 import { useState } from "react";
 import { motion } from "motion/react";
 import { Mail, Lock, User, Eye, EyeOff, Loader2, Check } from "lucide-react";
+import { toast } from "sonner";
+import { api } from "../../convex/_generated/api";
 import { AuthLayout } from "@/components/AuthLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -33,13 +37,29 @@ const perks = ["60-second daily check-in", "One kind nudge a day", "Private by d
 
 function SignUpPage() {
   const navigate = useNavigate();
+  const { signIn } = useAuthActions();
+  const ensureProfile = useMutation(api.users.ensureProfile);
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => navigate({ to: "/app/onboarding" }), 700);
+
+    const formData = new FormData(e.currentTarget);
+    formData.set("flow", "signUp");
+    const firstName = formData.get("name")?.toString() ?? "";
+
+    try {
+      await signIn("password", formData);
+      await ensureProfile({ firstName: firstName || undefined });
+      navigate({ to: "/app/onboarding" });
+    } catch (error) {
+      console.error(error);
+      toast.error("Could not create your account. Try a different email or password.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -77,7 +97,7 @@ function SignUpPage() {
           <Label htmlFor="name">First name</Label>
           <div className="relative">
             <User className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-plum/60" />
-            <Input id="name" required placeholder="Sinikiwe" className="pl-10" />
+            <Input id="name" name="name" required placeholder="Sinikiwe" className="pl-10" />
           </div>
         </div>
 
@@ -85,7 +105,7 @@ function SignUpPage() {
           <Label htmlFor="email">Email</Label>
           <div className="relative">
             <Mail className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-plum/60" />
-            <Input id="email" type="email" required placeholder="you@campus.edu" className="pl-10" />
+            <Input id="email" name="email" type="email" required placeholder="you@campus.edu" className="pl-10" />
           </div>
         </div>
 
@@ -95,6 +115,7 @@ function SignUpPage() {
             <Lock className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-plum/60" />
             <Input
               id="password"
+              name="password"
               type={show ? "text" : "password"}
               required
               minLength={8}
@@ -125,20 +146,6 @@ function SignUpPage() {
             {loading ? "Creating your space…" : "Create free account"}
           </Button>
         </motion.div>
-
-        <div className="flex items-center gap-3 text-xs text-muted-foreground">
-          <span className="h-px flex-1 bg-border" /> or sign up with{" "}
-          <span className="h-px flex-1 bg-border" />
-        </div>
-
-        <div className="grid grid-cols-2 gap-3">
-          <Button type="button" variant="soft" className="w-full">
-            Google
-          </Button>
-          <Button type="button" variant="soft" className="w-full">
-            Apple
-          </Button>
-        </div>
       </form>
     </AuthLayout>
   );

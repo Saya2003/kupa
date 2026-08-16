@@ -15,6 +15,7 @@ import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as SigninRouteImport } from './routes/signin'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppChatRouteImport } from './routes/app.chat'
 import { Route as AppCheckinRouteImport } from './routes/app.checkin'
 import { Route as AppCommunityRouteImport } from './routes/app.community'
 import { Route as AppGoalsRouteImport } from './routes/app.goals'
@@ -52,6 +53,11 @@ const SignupRoute = SignupRouteImport.update({
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppChatRoute = AppChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
   getParentRoute: () => AppRoute,
 } as any)
 const AppCheckinRoute = AppCheckinRouteImport.update({
@@ -101,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/forgot-password': typeof ForgotPasswordRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/app/chat': typeof AppChatRoute
   '/app/checkin': typeof AppCheckinRoute
   '/app/community': typeof AppCommunityRoute
   '/app/goals': typeof AppGoalsRoute
@@ -116,6 +123,7 @@ export interface FileRoutesByTo {
   '/forgot-password': typeof ForgotPasswordRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/app/chat': typeof AppChatRoute
   '/app/checkin': typeof AppCheckinRoute
   '/app/community': typeof AppCommunityRoute
   '/app/goals': typeof AppGoalsRoute
@@ -133,6 +141,7 @@ export interface FileRoutesById {
   '/forgot-password': typeof ForgotPasswordRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/app/chat': typeof AppChatRoute
   '/app/checkin': typeof AppCheckinRoute
   '/app/community': typeof AppCommunityRoute
   '/app/goals': typeof AppGoalsRoute
@@ -151,6 +160,7 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/signin'
     | '/signup'
+    | '/app/chat'
     | '/app/checkin'
     | '/app/community'
     | '/app/goals'
@@ -166,6 +176,7 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/signin'
     | '/signup'
+    | '/app/chat'
     | '/app/checkin'
     | '/app/community'
     | '/app/goals'
@@ -182,6 +193,7 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/signin'
     | '/signup'
+    | '/app/chat'
     | '/app/checkin'
     | '/app/community'
     | '/app/goals'
@@ -245,6 +257,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/chat': {
+      id: '/app/chat'
+      path: '/chat'
+      fullPath: '/app/chat'
+      preLoaderRoute: typeof AppChatRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/checkin': {
       id: '/app/checkin'
       path: '/checkin'
@@ -305,6 +324,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
+  AppChatRoute: typeof AppChatRoute
   AppCheckinRoute: typeof AppCheckinRoute
   AppCommunityRoute: typeof AppCommunityRoute
   AppGoalsRoute: typeof AppGoalsRoute
@@ -317,6 +337,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppChatRoute: AppChatRoute,
   AppCheckinRoute: AppCheckinRoute,
   AppCommunityRoute: AppCommunityRoute,
   AppGoalsRoute: AppGoalsRoute,

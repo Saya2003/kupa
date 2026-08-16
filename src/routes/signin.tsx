@@ -1,7 +1,9 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useAuthActions } from "@convex-dev/auth/react";
 import { useState } from "react";
 import { motion } from "motion/react";
 import { Mail, Lock, Eye, EyeOff, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import { AuthLayout } from "@/components/AuthLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,13 +33,26 @@ export const Route = createFileRoute("/signin")({
 
 function SignInPage() {
   const navigate = useNavigate();
+  const { signIn } = useAuthActions();
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => navigate({ to: "/app" }), 700);
+
+    const formData = new FormData(e.currentTarget);
+    formData.set("flow", "signIn");
+
+    try {
+      await signIn("password", formData);
+      navigate({ to: "/app" });
+    } catch (error) {
+      console.error(error);
+      toast.error("Could not sign you in. Check your email and password.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -58,7 +73,7 @@ function SignInPage() {
           <Label htmlFor="email">Email</Label>
           <div className="relative">
             <Mail className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-plum/60" />
-            <Input id="email" type="email" required placeholder="you@campus.edu" className="pl-10" />
+            <Input id="email" name="email" type="email" required placeholder="you@campus.edu" className="pl-10" />
           </div>
         </div>
 
@@ -68,6 +83,7 @@ function SignInPage() {
             <Lock className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-plum/60" />
             <Input
               id="password"
+              name="password"
               type={show ? "text" : "password"}
               required
               placeholder="••••••••"
@@ -99,20 +115,6 @@ function SignInPage() {
             {loading ? "Signing you in…" : "Sign in"}
           </Button>
         </motion.div>
-
-        <div className="flex items-center gap-3 text-xs text-muted-foreground">
-          <span className="h-px flex-1 bg-border" /> or continue with{" "}
-          <span className="h-px flex-1 bg-border" />
-        </div>
-
-        <div className="grid grid-cols-2 gap-3">
-          <Button type="button" variant="soft" className="w-full">
-            Google
-          </Button>
-          <Button type="button" variant="soft" className="w-full">
-            Apple
-          </Button>
-        </div>
       </form>
     </AuthLayout>
   );

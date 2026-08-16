@@ -15,10 +15,16 @@ dist-ssr
 .tanstack/**
 .nitro
 *.local
+.env
+.env.*
+!.env.example
 
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars
+
+# Netlify build output (internal functions + CLI state)
+.netlify/
 
 # Editor directories and files
 .vscode/*
